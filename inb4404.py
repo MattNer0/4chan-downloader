@@ -32,7 +32,7 @@ def main():
         download_from_file(thread)
 
 def load(url):
-    req = urllib.request.Request(url, headers={'User-Agent': '4chan Browser'})
+    req = urllib.request.Request(url, headers={'User-Agent': '8chan Browser'})
     return urllib.request.urlopen(req).read()
 
 def download_thread(thread_link):
@@ -50,8 +50,9 @@ def download_thread(thread_link):
 
     while True:
         try:
-            regex = '(\/\/i(?:s|)\d*\.(?:4cdn|4chan)\.org\/\w+\/(\d+\.(?:jpg|png|gif|webm)))'
-            regex_result = list(set(re.findall(regex, load(thread_link).decode('utf-8'))))
+            body = load(thread_link).decode('utf-8')
+            regex = '(\/\/i?(?:s|)(?:\d*|media)\.?(?:4cdn|4chan|8ch)\.(?:org|net)\/\w+\/([a-z0-9]+\.(?:jpg|jpeg|mp4|png|gif|webm)))'
+            regex_result = list(set(re.findall(regex, body)))
             regex_result = sorted(regex_result, key=lambda tup: tup[1])
             regex_result_len = len(regex_result)            
             regex_result_cnt = 1
@@ -74,12 +75,12 @@ def download_thread(thread_link):
                     # saves new images to a seperate directory
                     # if you delete them there, they are not downloaded again
                     # if you delete an image in the 'downloads' directory, it will be downloaded again
-                    copy_directory = os.path.join(workpath, 'new', board, thread)
-                    if not os.path.exists(copy_directory):
-                        os.makedirs(copy_directory)
-                    copy_path = os.path.join(copy_directory, img)
-                    with open(copy_path, 'wb') as f:
-                        f.write(data)
+                    #copy_directory = os.path.join(workpath, 'new', board, thread)
+                    #if not os.path.exists(copy_directory):
+                    #    os.makedirs(copy_directory)
+                    #copy_path = os.path.join(copy_directory, img)
+                    #with open(copy_path, 'wb') as f:
+                    #    f.write(data)
                     ##################################################################################
                 regex_result_cnt += 1
 
